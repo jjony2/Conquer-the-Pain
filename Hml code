@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calorie Intake and BMI Calculator</title>
+    <style>
+        .result-box {
+            border: 1px solid black;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f2f2f2;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calorie Intake and BMI Calculator</h1>
+    <p>Please fill out the following information:</p>
+    <form>
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" name="weight"><br><br>
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" name="height"><br><br>
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br><br>
+        <label for="activityLevel">Activity Level:</label>
+        <select id="activityLevel" name="activityLevel">
+            <option value="sedentary">Sedentary</option>
+            <option value="moderate">Moderate</option>
+            <option value="active">Active</option>
+        </select><br><br>
+        <label for="goal">Do you want to gain or lose weight?</label><br>
+        <input type="radio" id="gain" name="goal" value="gain">
+        <label for="gain">Gain weight</label><br>
+        <input type="radio" id="lose" name="goal" value="lose">
+        <label for="lose">Lose weight</label><br><br>
+        <input type="button" value="Calculate" onclick="calculate()">
+    </form>
+
+
+    <div class="result-box" id="bmiResult"></div>
+    <div class="result-box" id="caloriesResult"></div>
+
+
+    <h2>Book Recommendations</h2>
+    <p>Choose a book genre:</p>
+    <select id="bookGenre" name="bookGenre">
+        <option value="personalDevelopment">Personal Development</option>
+        <option value="philosophy">Philosophy</option>
+        <option value="psychology">Psychology</option>
+        <option value="businessAndFinance">Business and Finance</option>
+    </select><br><br>
+    <input type="button" value="Get Recommendations" onclick="getBookRecommendations()">
+
+
+    <div class="result-box" id="bookRecommendations"></div>
+
+
+    <script>
+        function calculate() {
+            var weight = document.getElementById("weight").value;
+            var height = document.getElementById("height").value / 100;             var gender = document.getElementById("gender").value;
+            var activityLevel = document.getElementById("activityLevel").value;
+            var goal = document.querySelector('input[name="goal"]:checked').value;
+
+
+                      var bmi = weight / (height * height);
+            var bmiResultBox = document.getElementById("bmiResult");
+            bmiResultBox.innerHTML = "<p>Your BMI is " + bmi.toFixed(2) + "</p>";
+
+
+            var bmr;
+           
+            if (gender === "male") {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height * 100) - (5.677 * 30);            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height * 100) - (4.330 * 30);
+            }
+
+
+                       var activityMultiplier;
+            switch (activityLevel) {
+                case "sedentary":
+                    activityMultiplier = 1.2;
+                    break;
+                case "moderate":
+                    activityMultiplier = 1.55;
+                    break;
+                case "active":
+                    activityMultiplier = 1.9;
+                    break;
+            }
+            var tdee = bmr * activityMultiplier;
+
+
+                       var calories;
+            if (goal === "gain") {
+                calories = tdee + 500;          
+  } else {
+                calories = tdee - 500;             }
+
+
+            var caloriesResultBox = document.getElementById("caloriesResult");
+            caloriesResultBox.innerHTML = "<p>Your daily calorie intake should be " + calories.toFixed(0) + " calories.</p>";
+        }
+
+
+        function getBookRecommendations() {
+            var bookGenre = document.getElementById("bookGenre").value;
+            var recommendations = {
+                "personalDevelopment": [
+                    "The 7 Habits of Highly Effective People by Stephen Covey",
+                    "How to Win Friends and Influence People by Dale Carnegie",
+                    "Think and Grow Rich by Napoleon Hill",
+                    "The Power of Now by Eckhart Tolle",
+                    "Man's Search for Meaning by Viktor Frankl",
+                    "The Four Agreements by Don Miguel Ruiz",
+                    "The Power of Habit by Charles Duhigg",
+                    "Mindset: The New Psychology of Success by Carol Dweck",
+                    "The 5 Second Rule by Mel Robbins",
+                    "Atomic Habits by James Clear"
+                ],
+                "philosophy": [
+                    "The Republic by Plato",
+                    "Meditations by Marcus Aurelius",
+                    "Beyond Good and Evil by Friedrich Nietzsche",
+                    "The Ethics of Aristotle",
+                    "The Tao Te Ching by Lao Tzu",
+                    "The Social Contract by Jean-Jacques Rousseau",
+                    "The Critique of Pure Reason by Immanuel Kant",
+                    "The Prince by Niccolò Machiavelli",
+                    "Thus Spoke Zarathustra by Friedrich Nietzsche",
+                    "Being and Time by Martin Heidegger"
+                ],
+                "psychology": [
+                    "Thinking, Fast and Slow by Daniel Kahneman",
+                    "Influence: The Psychology of Persuasion by Robert Cialdini",
+                    "Blink: The Power of Thinking Without Thinking by Malcolm Gladwell",
+                    "Quiet: The Power of Introverts in a World That Can't Stop Talking by Susan Cain",
+                    "Emotional Intelligence by Daniel Goleman",
+                    "The Happiness Hypothesis by Jonathan Haidt",
+                    "The Man Who Mistook His Wife for a Hat by Oliver Sacks",
+                    "The Paradox of Choice by Barry Schwartz",
+                    "The Denial of Death by Ernest Becker",
+                    "Grit: The Power of Passion and Perseverance by Angela Duckworth"
+                ],
+                "businessAndFinance": [
+                    "Rich Dad Poor Dad by Robert Kiyosaki",
+                    "The Intelligent Investor by Benjamin Graham",
+                    "Good to Great by Jim Collins",
+                    "The Lean Startup by Eric Ries",
+                    "The E-Myth Revisited by Michael E. Gerber",
+                    "The Four Hour Workweek by Timothy Ferriss",
+                    "The Millionaire Next Door by Thomas J. Stanley",
+                    "The 10X Rule by Grant Cardone",
+                    "The Richest Man in Babylon by George S. Clason",
+                    "The Total Money Makeover by Dave Ramsey"
+                ]
+            };
+
+
+            var bookRecommendationsBox = document.getElementById("bookRecommendations");
+            var selectedBooks = recommendations[bookGenre];
+            bookRecommendationsBox.innerHTML = "<p>Recommended books:</p><ul>";
+            for (var i = 0; i < selectedBooks.length; i++) {
+                bookRecommendationsBox.innerHTML += "<li>" + selectedBooks[i] + "</li>";
+            }
+            bookRecommendationsBox.innerHTML += "</ul>";
+        }
+
+
+        var challenges = [
+            "Read for 30 minutes",
+            "Take a cold shower",
+            "Meditate for 10 minutes",
+            "Exercise for at least 30 minutes",
+            "Write down your daily goals",
+            "Cook a healthy meal",
+            "Drink 8 glasses of water",
+            "Practice a new skill for 30 minutes",
+            "Compliment someone",
+            "Go to bed by 10 pm"
+        ];
+
+
+    </script>
+
+
+    <h2>Challenges</h2>
+    <p>Mark the challenges you have completed today:</p>
+    <form>
+        <ul>
+            <li>
+                <input type="checkbox" id="challenge1" name="challenge1">
+                <label for="challenge1">Read for 30 minutes</label>
+            </li>
+        </ul>
+    </form>
+
+
+    <script>
+        function addChallenges() {
+            var challengesList = document.querySelector("form > ul");
+            for (var i = 0; i < challenges.length; i++) {
+                var listItem = document.createElement("li");
+                var checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.id = "challenge" + (i + 1);
+                checkbox.name = "challenge" + (i + 1);
+                var label = document.createElement("label");
+                label.htmlFor = "challenge" + (i + 1);
+                label.textContent = challenges[i];
+
+
+                listItem.appendChild(checkbox);
+                listItem.appendChild(label);
+                challengesList.appendChild(listItem);
+            }
+        }
+
+
+        addChallenges();
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calorie Intake and BMI Calculator</title>
+    <style>
+        .result-box {
+            border: 1px solid black;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f2f2f2;
+            width: 300px;
+        }
+        .content {
+            display: flex;
+        }
+        .main {
+            flex: 1;
+        }
+        .sidebar {
+            flex: 0 0 300px;
+            margin-left: 20px;
+            padding: 20px;
+            border: 1px solid black;
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="main">
+        </div>
+        <div class="sidebar">
+            <h2>Workouts</h2>
+            <p>Select your workout location:</p>
+            <select id="workoutLocation" name="workoutLocation">
+                <option value="home">Home</option>
+                <option value="fitness">Fitness</option>
+            </select><br><br>
+            <input type="button" value="Get Workout Regime" onclick="getWorkoutRegime()">
+            <div class="result-box" id="workoutRegime"></div>
+        </div>
+    </div>
+
+
+    <script>
+
+
+        function getWorkoutRegime() {
+            var workoutLocation = document.getElementById("workoutLocation").value;
+            var workouts = {
+                "home": [
+                    ["Push-ups ", " 3 sets of 10 reps;  "],
+
+
+                    ["Squats ", " 3 sets of 15 reps;  "],
+                    ["Lunges ", " 3 sets of 10 reps  "],
+                    ["Plank ", " 3 sets of 30 seconds  "],
+                    ["Jumping Jacks ", " 3 sets of 30 reps  "],
+                ],
+                "fitness": [
+                    ["Bench Press ", " 4 sets of 8 reps   "],
+                    ["Squats ", " 4 sets of 10 reps  "],
+                    ["Deadlift ", " 4 sets of 6 reps  "],
+                    ["Pull-ups ", " 3 sets of 8 reps  "],
+                    ["Treadmill ", " 20 minutes  "]
+                ]
+            };
+
+
+            var selectedWorkouts = workouts[workoutLocation];
+            var workoutRegimeBox = document.getElementById("workoutRegime");
+            workoutRegimeBox.innerHTML = "<table><tr><th>Exercise</th><th>Sets and Reps</th></tr>";
+            for (var i = 0; i < selectedWorkouts.length; i++) {
+                workoutRegimeBox.innerHTML += "<tr><td>" + selectedWorkouts[i][0] + "</td><td>" + selectedWorkouts[i][1] + "</td></tr>";
+            }
+            workoutRegimeBox.innerHTML += "</table>";
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meditation Timer</title>
+    <style>
+        .result-box {
+            border: 1px solid black;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f2f2f2;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Meditation</h1>
+    <p>
+        To meditate, find a quiet and comfortable place to sit or lie down. Close your eyes and take slow, deep breaths, focusing on your breath as you inhale and exhale. If your mind starts to wander, gently bring your attention back to your breath. You can set a timer for your meditation session below.
+    </p>
+
+
+    <label for="meditationLevel">Choose your meditation level:</label>
+    <select id="meditationLevel" name="meditationLevel">
+        <option value="beginner">Beginner</option>
+        <option value="advanced">Advanced</option>
+        <option value="expert">Expert</option>
+    </select><br><br>
+
+
+    <input type="button" value="Start Meditation" onclick="startMeditation()">
+    <div class="result-box" id="meditationTimer"></div>
+   
+    <iframe id="ytplayer" width="640" height="360" src="https://www.youtube.com/embed/XcFJr7eRZMw?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+    <script>
+        var meditationDuration;
+        var timer;
+        var ytplayer = document.getElementById('ytplayer');
+
+
+        function startMeditation() {
+            var meditationLevel = document.getElementById("meditationLevel").value;
+
+
+            switch (meditationLevel) {
+                case "beginner":
+                    meditationDuration = 5 * 60;
+                    break;
+                case "advanced":
+                    meditationDuration = 15 * 60;
+                    break;
+                case "expert":
+                    meditationDuration = 30 * 60;
+                    break;
+            }
+
+
+            ytplayer.contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+            timer = setInterval(updateTimer, 1000);
+        }
+
+
+        function updateTimer() {
+            if (meditationDuration <= 0) {
+                clearInterval(timer);
+                ytplayer.contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
+                document.getElementById("meditationTimer").innerHTML = "Meditation complete!";
+            } else {
+                var minutes = Math.floor(meditationDuration / 60);
+                var seconds = meditationDuration % 60;
+                document.getElementById("meditationTimer").innerHTML = minutes + "m " + seconds + "s";
+                meditationDuration--;
+            }
+        }
+    </script>
+</body>
+</html>
+
+
